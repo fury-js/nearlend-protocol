@@ -75,15 +75,28 @@ trait UnderlineTokenInterface {
 
 #[ext_contract(controller)]
 trait ControllerInterface {
+    // supply
     fn increase_supplies(&mut self, account_id: AccountId, amount: Balance) -> Promise;
     fn decrease_supplies(&mut self, account_id: AccountId, amount: Balance) -> Promise;
+
+    // borrow
+    fn increase_borrows(&mut self, account_id: AccountId, amount: Balance) -> Promise;
+    fn decrease_borrows(&mut self, account_id: AccountId, amount: Balance) -> Promise;
 }
 
 #[ext_contract(ext_self)]
 trait InternalTokenInterface {
+    // for supply module
     fn supply_balance_of_callback(&mut self, amount: Balance);
     fn controller_increase_supplies_callback(&mut self, amount: Balance) -> PromiseOrValue<U128>;
     fn supply_ft_transfer_call_callback(&mut self, amount: Balance);
+
+    // for borrow module
+    fn borrow_balance_of_callback(&mut self, amount: Balance);
+    fn controller_increase_borrows_callback(&mut self, amount: Balance) -> PromiseOrValue<U128>;
+    fn controller_decrease_borrows_callback(&mut self, amount: Balance) -> PromiseOrValue<U128>;
+    fn borrow_ft_transfer_call_callback(&mut self, amount: Balance);
+
 }
 
 #[near_bindgen]
